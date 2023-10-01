@@ -430,6 +430,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "rusty_game_of_life"
+version = "0.1.0"
+dependencies = [
+ "criterion",
+]
+
+[[package]]
 name = "ryu"
 version = "1.0.15"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -619,8 +626,8 @@ name = "wasm-game-of-life"
 version = "0.1.0"
 dependencies = [
  "console_error_panic_hook",
- "criterion",
  "js-sys",
+ "rusty_game_of_life",
  "wasm-bindgen",
  "wasm-bindgen-test",
  "web-sys",

@@ -1,9 +1,3 @@
-mod utils;
-
-use std::fmt;
-use wasm_bindgen::prelude::*;
-
-#[wasm_bindgen]
 #[repr(u8)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Cell {
@@ -20,20 +14,14 @@ impl Cell {
     }
 }
 
-#[wasm_bindgen]
 pub struct Universe {
     width: u32,
     height: u32,
     cells: Vec<Cell>,
 }
 
-#[wasm_bindgen]
 impl Universe {
     pub fn new() -> Universe {
-        utils::set_panic_hook();
-
-        utils::log!("Creating new universe");
-
         let width = 256;
         let height = 256;
 
@@ -60,21 +48,21 @@ impl Universe {
 
         let cells = (0..width * height)
             .map(|i| {
-                // if i % 2 == 0 || i % 7 == 0 {
-                //     Cell::Alive
-                // } else {
-                //     Cell::Dead
-                // }
+                if i % 2 == 0 || i % 7 == 0 {
+                    Cell::Alive
+                } else {
+                    Cell::Dead
+                }
                 // if starting.contains(&(i as usize)) {
                 //     Cell::Alive
                 // } else {
                 //     Cell::Dead
                 // }
-                if js_sys::Math::random() < 0.5 {
-                    Cell::Alive
-                } else {
-                    Cell::Dead
-                }
+                // if js_sys::Math::random() < 0.5 {
+                //     Cell::Alive
+                // } else {
+                //     Cell::Dead
+                // }
             })
             .collect();
 
@@ -180,10 +168,7 @@ impl Universe {
     fn clear(&mut self) {
         self.cells = (0..self.width * self.height).map(|_i| Cell::Dead).collect();
     }
-}
 
-// Non wasm methods.
-impl Universe {
     /// Get the dead and alive valuse of the eniter universe.
     pub fn get_cells(&self) -> &[Cell] {
         &self.cells
@@ -199,8 +184,8 @@ impl Universe {
     }
 }
 
-impl fmt::Display for Universe {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+impl std::fmt::Display for Universe {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         for line in self.cells.as_slice().chunks(self.width as usize) {
             for &cell in line {
                 let symbol = if cell == Cell::Dead { '◻' } else { '◼' };
