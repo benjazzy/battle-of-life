@@ -132,42 +132,82 @@ const drawCells = () => {
   const cellsPtr = universe.cells();
   const cells = new Uint8Array(memory.buffer, cellsPtr, width * height);
 
+  const changedPtr = universe.changed();
+  const changedLen = universe.changed_len();
+  const changed = new Uint8Array(memory.buffer, changedPtr, changedLen);
+
+  console.log("Cells: " + cells);
+  console.log("Changed: " + changed);
+
   ctx.beginPath();
 
   // Alive cells.
   ctx.fillStyle = ALIVE_COLOR;
-  for (let row = 0; row < height; row++) {
-    for (let col = 0; col < width; col++) {
-      const idx = getIndex(row, col);
-      if (cells[idx] !== Cell.Alive) {
-        continue;
-      }
-
-      ctx.fillRect(
-        col * (CELL_SIZE + 1) + 1,
-        row * (CELL_SIZE + 1) + 1,
-        CELL_SIZE,
-        CELL_SIZE
-      );
+  // for (let row = 0; row < height; row++) {
+  //   for (let col = 0; col < width; col++) {
+  //     const idx = getIndex(row, col);
+  //     if (cells[idx] !== Cell.Alive) {
+  //       continue;
+  //     }
+  //
+  //     ctx.fillRect(
+  //       col * (CELL_SIZE + 1) + 1,
+  //       row * (CELL_SIZE + 1) + 1,
+  //       CELL_SIZE,
+  //       CELL_SIZE
+  //     );
+  //   }
+  // }
+  for (let i = 0; i < changed.length; i++) {
+    const idx = changed[i];
+    if (cells[idx] !== Cell.Alive) {
+      continue;
     }
+
+    const col = idx % width;
+    const row = Math.floor(idx / width);
+    console.log(idx);
+
+    ctx.fillRect(
+      col * (CELL_SIZE + 1) + 1,
+      row * (CELL_SIZE + 1) + 1,
+      CELL_SIZE,
+      CELL_SIZE
+    );
   }
 
   // Dead cells.
   ctx.fillStyle = DEAD_COLOR;
-  for (let row = 0; row < height; row++) {
-    for (let col = 0; col < width; col++) {
-      const idx = getIndex(row, col);
-      if (cells[idx] !== Cell.Dead) {
-        continue;
-      }
-
-      ctx.fillRect(
-        col * (CELL_SIZE + 1) + 1,
-        row * (CELL_SIZE + 1) + 1,
-        CELL_SIZE,
-        CELL_SIZE
-      );
+  // for (let row = 0; row < height; row++) {
+  //   for (let col = 0; col < width; col++) {
+  //     const idx = getIndex(row, col);
+  //     if (cells[idx] !== Cell.Dead) {
+  //       continue;
+  //     }
+  //
+  //     ctx.fillRect(
+  //       col * (CELL_SIZE + 1) + 1,
+  //       row * (CELL_SIZE + 1) + 1,
+  //       CELL_SIZE,
+  //       CELL_SIZE
+  //     );
+  //   }
+  // }
+  for (let i = 0; i < changed.length; i++) {
+    const idx = changed[i];
+    if (cells[idx] !== Cell.Dead) {
+      continue;
     }
+
+    const col = idx % width;
+    const row = Math.floor(idx / width);
+
+    ctx.fillRect(
+      col * (CELL_SIZE + 1) + 1,
+      row * (CELL_SIZE + 1) + 1,
+      CELL_SIZE,
+      CELL_SIZE
+    );
   }
 
   // for (let row = 0; row < height; row++) {
@@ -206,4 +246,10 @@ const renderLoop = () => {
 
 drawGrid();
 drawCells();
-play();
+universe.tick();
+drawGrid();
+drawCells();
+universe.tick();
+drawGrid();
+drawCells();
+// play();

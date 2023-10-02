@@ -14,10 +14,41 @@ impl Cell {
     }
 }
 
+#[derive(Debug, Default)]
+struct ChangedCells {
+    changed: Vec<usize>,
+    len: usize,
+}
+
+impl ChangedCells {
+    pub fn new() -> ChangedCells {
+        Default::default()
+    }
+
+    pub fn reset(&mut self) {
+        self.len = 0;
+    }
+
+    pub fn change(&mut self, idx: usize) {
+        if self.changed.len() <= self.len {
+            self.changed.push(idx);
+        } else {
+            self.changed[self.len] = idx;
+        }
+
+        self.len += 1;
+    }
+
+    pub fn changed(&self) -> *const usize {
+        self.changed.as_ptr()
+    }
+}
+
 pub struct Universe {
     width: u32,
     height: u32,
     cells: Vec<Cell>,
+    changed_cells: ChangedCells,
 }
 
 impl Universe {
@@ -68,6 +99,7 @@ impl Universe {
             width,
             height,
             cells,
+            changed_cells: ChangedCells::new(),
         }
     }
 
@@ -107,12 +139,25 @@ impl Universe {
         self.clear();
     }
 
+    pub fn changed(&self) -> *const usize {
+        self.changed_cells.changed()
+    }
+
+    pub fn get_changed(&self) -> &[usize] {
+        self.changed_cells.changed.as_slice()
+    }
+
+    pub fn changed_len(&self) -> usize {
+        self.changed_cells.len
+    }
+
     pub fn toggle_cell(&mut self, row: u32, column: u32) {
         let idx = self.get_index(row, column);
         self.cells[idx].toggle();
     }
 
     pub fn tick(&mut self) {
+        self.changed_cells.reset();
         let mut next = self.cells.clone();
 
         for row in 0..self.height {
@@ -127,7 +172,7 @@ impl Universe {
                     (Cell::Alive, x) if x < 2 => Cell::Dead,
                     // Rule 2: Any live cell with two or three live neighbours
                     // lives on to the next generation.
-                    (Cell::Alive, 2) | (Cell::Alive, 3) => Cell::Alive,
+                    // (Cell::Alive, 2) | (Cell::Alive, 3) => Cell::Alive,
                     // Rule 3: Any live cell with more than three live
                     // neighbours dies, as if by overpopulation.
                     (Cell::Alive, x) if x > 3 => Cell::Dead,
@@ -135,9 +180,10 @@ impl Universe {
                     // becomes a live cell, as if by reproduction.
                     (Cell::Dead, 3) => Cell::Alive,
                     // All other cells remain in the same state.
-                    (otherwise, _) => otherwise,
+                    _ => continue,
                 };
 
+                self.changed_cells.change(idx);
                 next[idx] = next_cell;
             }
         }
