@@ -3,8 +3,8 @@
 #![cfg(target_arch = "wasm32")]
 
 extern crate wasm_bindgen_test;
+use wasm_battle_of_life::WasmUniverse;
 use wasm_bindgen_test::{wasm_bindgen_test, *};
-use wasm_game_of_life::Universe;
 
 wasm_bindgen_test_configure!(run_in_browser);
 
@@ -14,8 +14,8 @@ fn pass() {
 }
 
 #[cfg(test)]
-pub fn input_spaceship() -> Universe {
-    let mut universe = Universe::new();
+pub fn input_spaceship() -> WasmUniverse {
+    let mut universe = WasmUniverse::new();
     universe.set_width(6);
     universe.set_height(6);
     universe.set_cells(&[(1, 2), (2, 3), (3, 1), (3, 2), (3, 3)]);
@@ -23,8 +23,8 @@ pub fn input_spaceship() -> Universe {
 }
 
 #[cfg(test)]
-pub fn expected_spaceship() -> Universe {
-    let mut universe = Universe::new();
+pub fn expected_spaceship() -> WasmUniverse {
+    let mut universe = WasmUniverse::new();
     universe.set_width(6);
     universe.set_height(6);
     universe.set_cells(&[(2, 1), (2, 3), (3, 2), (3, 3), (4, 2)]);

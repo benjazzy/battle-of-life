@@ -1,5 +1,5 @@
 [package]
-name = "wasm-game-of-life"
+name = "wasm-battle-of-life"
 version = "0.1.0"
 authors = ["benjazzy"]
 edition = "2021"
@@ -21,8 +21,8 @@ wasm-bindgen = "0.2.84"
 console_error_panic_hook = { version = "0.1.7", optional = true }
 js-sys = "0.3.64"
 
-[dependencies.rusty_game_of_life]
-path = "../rusty-game-of-life"
+[dependencies.battle-of-life]
+path = "../battle-of-life"
 
 [dependencies.web-sys]
 version = "0.3"

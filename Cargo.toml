@@ -2,8 +2,8 @@
 
 resolver = "2"
 members = [
-  "rusty-game-of-life",
-  "wasm-game-of-life",
+  "battle-of-life",
+  "wasm-battle-of-life",
 ]
 
 [profile.release]

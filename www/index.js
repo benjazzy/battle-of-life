@@ -1,5 +1,5 @@
-import { Universe, Cell } from "wasm-game-of-life";
-import { memory } from "wasm-game-of-life/wasm_game_of_life_bg";
+import { Universe, Cell } from "wasm-battle-of-life";
+import { memory } from "wasm-battle-of-life/wasm_battle_of_life_bg";
 
 let animationId = null;
 
