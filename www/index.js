@@ -193,10 +193,10 @@ const drawCells = () => {
 const renderLoop = () => {
   fps.render();
 
-  for (let i = 0; i < 9; i++) {
-    universe.tick();
-  }
-  // universe.tick();
+  // for (let i = 0; i < 9; i++) {
+  //   universe.tick();
+  // }
+  universe.tick();
 
   drawGrid();
   drawCells();
