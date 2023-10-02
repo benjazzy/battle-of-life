@@ -26,7 +26,13 @@ pub struct WasmUniverse(rusty_game_of_life::Universe);
 #[wasm_bindgen(js_class = Universe)]
 impl WasmUniverse {
     pub fn new() -> WasmUniverse {
-        WasmUniverse(rusty_game_of_life::Universe::new())
+        WasmUniverse(rusty_game_of_life::Universe::new(256, 256, |i| {
+            if i % 2 == 0 || i % 7 == 0 {
+                rusty_game_of_life::Cell::Alive
+            } else {
+                rusty_game_of_life::Cell::Dead
+            }
+        }))
     }
 
     pub fn tick(&mut self) {

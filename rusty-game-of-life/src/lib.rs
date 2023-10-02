@@ -21,10 +21,7 @@ pub struct Universe {
 }
 
 impl Universe {
-    pub fn new() -> Universe {
-        let width = 256;
-        let height = 256;
-
+    pub fn new(width: u32, height: u32, generator: impl Fn(u32) -> Cell) -> Universe {
         let get_index = |row: u32, col: u32| (row * width + col) as usize;
 
         // let starting = [
@@ -47,23 +44,24 @@ impl Universe {
         // ];
 
         let cells = (0..width * height)
-            .map(|i| {
-                if i % 2 == 0 || i % 7 == 0 {
-                    Cell::Alive
-                } else {
-                    Cell::Dead
-                }
-                // if starting.contains(&(i as usize)) {
-                //     Cell::Alive
-                // } else {
-                //     Cell::Dead
-                // }
-                // if js_sys::Math::random() < 0.5 {
-                //     Cell::Alive
-                // } else {
-                //     Cell::Dead
-                // }
-            })
+            // .map(|i| {
+            //     if i % 2 == 0 || i % 7 == 0 {
+            //         Cell::Alive
+            //     } else {
+            //         Cell::Dead
+            //     }
+            //     // if starting.contains(&(i as usize)) {
+            //     //     Cell::Alive
+            //     // } else {
+            //     //     Cell::Dead
+            //     // }
+            //     // if js_sys::Math::random() < 0.5 {
+            //     //     Cell::Alive
+            //     // } else {
+            //     //     Cell::Dead
+            //     // }
+            // })
+            .map(generator)
             .collect();
 
         Universe {
@@ -71,6 +69,10 @@ impl Universe {
             height,
             cells,
         }
+    }
+
+    pub fn new_empty(width: u32, height: u32) -> Universe {
+        Self::new(width, height, |_| Cell::Dead)
     }
 
     pub fn render(&self) -> String {
