@@ -6,3 +6,4 @@ pkg/
 wasm-pack.log
 perf.data*
 flamegraph.svg
+node_modules

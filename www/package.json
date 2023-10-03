@@ -1,7 +1,7 @@
 {
-  "name": "create-wasm-app",
+  "name": "battle-of-life",
   "version": "0.1.0",
-  "description": "create an app to consume rust-generated wasm packages",
+  "description": "",
   "main": "index.js",
   "bin": {
     "create-wasm-app": ".bin/create-wasm-app.js"
@@ -20,12 +20,12 @@
     "rust",
     "webpack"
   ],
-  "author": "Ashley Williams <ashley666ashley@gmail.com>",
-  "license": "(MIT OR Apache-2.0)",
+  "author": "",
+  "license": "",
   "bugs": {
-    "url": "https://github.com/rustwasm/create-wasm-app/issues"
+    "url": ""
   },
-  "homepage": "https://github.com/rustwasm/create-wasm-app#readme",
+  "homepage": "",
   "dependencies": {
     "wasm-battle-of-life": "file:../wasm-battle-of-life/pkg"
   },
