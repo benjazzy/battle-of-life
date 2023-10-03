@@ -26,17 +26,13 @@ pub struct WasmUniverse(battle_of_life::Universe);
 #[wasm_bindgen(js_class = Universe)]
 impl WasmUniverse {
     pub fn new() -> WasmUniverse {
-        // WasmUniverse(battle_of_life::Universe::new(64, 64, |i| {
-        //     if i % 2 == 0 || i % 7 == 0 {
-        //         battle_of_life::Cell::Alive
-        //     } else {
-        //         battle_of_life::Cell::Dead
-        //     }
-        // }))
-        let mut universe = battle_of_life::Universe::new(5, 5, |_| battle_of_life::Cell::Dead);
-        universe.set_cells(&[(2, 1), (2, 2), (2, 3)]);
-
-        WasmUniverse(universe)
+        WasmUniverse(battle_of_life::Universe::new(512, 512, |i| {
+            if i % 2 == 0 || i % 7 == 0 {
+                battle_of_life::Cell::Alive
+            } else {
+                battle_of_life::Cell::Dead
+            }
+        }))
     }
 
     pub fn tick(&mut self) {
@@ -63,7 +59,7 @@ impl WasmUniverse {
         self.0.cells() as *const WasmCell
     }
 
-    pub fn changed(&self) -> *const usize {
+    pub fn changed(&self) -> *const u32 {
         self.0.changed()
     }
 

@@ -128,16 +128,74 @@ const getIndex = (row, column) => {
   return row * width + column;
 }
 
+const drawAllCells = () => {
+  const cellsPtr = universe.cells();
+  const cells = new Uint8Array(memory.buffer, cellsPtr, width * height);
+
+  ctx.beginPath();
+
+  // Alive cells.
+  ctx.fillStyle = ALIVE_COLOR;
+  for (let row = 0; row < height; row++) {
+    for (let col = 0; col < width; col++) {
+      const idx = getIndex(row, col);
+      if (cells[idx] !== Cell.Alive) {
+        continue;
+      }
+
+      ctx.fillRect(
+        col * (CELL_SIZE + 1) + 1,
+        row * (CELL_SIZE + 1) + 1,
+        CELL_SIZE,
+        CELL_SIZE
+      );
+    }
+  }
+
+  // Dead cells.
+  ctx.fillStyle = DEAD_COLOR;
+  for (let row = 0; row < height; row++) {
+    for (let col = 0; col < width; col++) {
+      const idx = getIndex(row, col);
+      if (cells[idx] !== Cell.Dead) {
+        continue;
+      }
+
+      ctx.fillRect(
+        col * (CELL_SIZE + 1) + 1,
+        row * (CELL_SIZE + 1) + 1,
+        CELL_SIZE,
+        CELL_SIZE
+      );
+    }
+  }
+
+  // for (let row = 0; row < height; row++) {
+  //   for (let col = 0; col < width; col++) {
+  //     const idx = getIndex(row, col);
+  //     ctx.fillStyle = cells[idx] === Cell.Dead
+  //       ? DEAD_COLOR
+  //       : ALIVE_COLOR;
+  //
+  //     ctx.fillRect(
+  //       col * (CELL_SIZE + 1) + 1,
+  //       row * (CELL_SIZE + 1) + 1,
+  //       CELL_SIZE,
+  //       CELL_SIZE
+  //     );
+  //   }
+  // }
+  //
+  ctx.stroke();
+}
+
 const drawCells = () => {
   const cellsPtr = universe.cells();
   const cells = new Uint8Array(memory.buffer, cellsPtr, width * height);
 
   const changedPtr = universe.changed();
   const changedLen = universe.changed_len();
-  const changed = new Uint8Array(memory.buffer, changedPtr, changedLen);
-
-  console.log("Cells: " + cells);
-  console.log("Changed: " + changed);
+  const changed = new Uint32Array(memory.buffer, changedPtr, changedLen);
 
   ctx.beginPath();
 
@@ -166,7 +224,6 @@ const drawCells = () => {
 
     const col = idx % width;
     const row = Math.floor(idx / width);
-    console.log(idx);
 
     ctx.fillRect(
       col * (CELL_SIZE + 1) + 1,
@@ -244,12 +301,14 @@ const renderLoop = () => {
   animationId = requestAnimationFrame(renderLoop)
 };
 
+
+fps.render();
 drawGrid();
-drawCells();
+drawAllCells();
 universe.tick();
 drawGrid();
 drawCells();
 universe.tick();
 drawGrid();
 drawCells();
-// play();
+play();

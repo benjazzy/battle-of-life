@@ -16,7 +16,7 @@ impl Cell {
 
 #[derive(Debug, Default)]
 struct ChangedCells {
-    changed: Vec<usize>,
+    changed: Vec<u32>,
     len: usize,
 }
 
@@ -29,7 +29,7 @@ impl ChangedCells {
         self.len = 0;
     }
 
-    pub fn change(&mut self, idx: usize) {
+    pub fn change(&mut self, idx: u32) {
         if self.changed.len() <= self.len {
             self.changed.push(idx);
         } else {
@@ -39,7 +39,7 @@ impl ChangedCells {
         self.len += 1;
     }
 
-    pub fn changed(&self) -> *const usize {
+    pub fn changed(&self) -> *const u32 {
         self.changed.as_ptr()
     }
 }
@@ -139,11 +139,11 @@ impl Universe {
         self.clear();
     }
 
-    pub fn changed(&self) -> *const usize {
+    pub fn changed(&self) -> *const u32 {
         self.changed_cells.changed()
     }
 
-    pub fn get_changed(&self) -> &[usize] {
+    pub fn get_changed(&self) -> &[u32] {
         self.changed_cells.changed.as_slice()
     }
 
@@ -183,7 +183,7 @@ impl Universe {
                     _ => continue,
                 };
 
-                self.changed_cells.change(idx);
+                self.changed_cells.change(idx as u32);
                 next[idx] = next_cell;
             }
         }
