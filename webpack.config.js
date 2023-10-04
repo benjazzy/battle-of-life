@@ -2,6 +2,7 @@ const CopyWebpackPlugin = require("copy-webpack-plugin");
 const path = require('path');
 
 module.exports = {
+  context: path.resolve(__dirname, 'web'),
   entry: "./bootstrap.js",
   output: {
     path: path.resolve(__dirname, "dist"),
