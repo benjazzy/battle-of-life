@@ -1,5 +1,7 @@
+import './style.css';
+
 import { Universe, Cell } from "wasm-battle-of-life";
-import { memory } from "wasm-battle-of-life/wasm_battle_of_life_bg";
+import { memory } from "wasm-battle-of-life/wasm_battle_of_life_bg.wasm";
 
 let animationId = null;
 
